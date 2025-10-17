@@ -7,4 +7,4 @@ Discover our premium collection of icons that are fully customizable, responsive
 
 ## Getting Started
 
-Visit [here](./docs/README.md) to get started with this package.
+Visit [here](https://github.com/devpelatform/icons/blob/main/docs/README.md) to get started with this package.
