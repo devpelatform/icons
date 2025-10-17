@@ -1,0 +1,98 @@
+{
+  "name": "@pelatform/icons",
+  "version": "1.1.0",
+  "description": "A library of react icons.",
+  "author": "Pelatform Dev",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/cjs/index.cjs",
+  "module": "dist/esm/index.mjs",
+  "unpkg": "dist/umd/index.js",
+  "types": "dist/types/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.mjs",
+      "require": "./dist/cjs/index.cjs",
+      "default": "./dist/esm/index.mjs"
+    },
+    "./aliases": {
+      "types": "./dist/types/aliases.d.ts",
+      "import": "./dist/esm/aliases.mjs",
+      "require": "./dist/cjs/aliases.cjs",
+      "default": "./dist/esm/aliases.mjs"
+    },
+    "./dynamic-imports": {
+      "types": "./dist/types/dynamic-imports.d.ts",
+      "import": "./dist/esm/dynamic-imports.mjs",
+      "require": "./dist/cjs/dynamic-imports.cjs",
+      "default": "./dist/esm/dynamic-imports.mjs"
+    },
+    "./icon-list": {
+      "types": "./dist/types/icon-list.d.ts",
+      "import": "./dist/esm/icon-list.mjs",
+      "require": "./dist/cjs/icon-list.cjs",
+      "default": "./dist/esm/icon-list.mjs"
+    },
+    "./types": {
+      "types": "./dist/types/types.d.ts",
+      "import": "./dist/esm/types.mjs",
+      "require": "./dist/cjs/types.cjs",
+      "default": "./dist/esm/types.mjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "clean": "tsx scripts/clean.ts",
+    "clean:all": "pnpm clean && rm -rf node_modules pnpm-lock.yaml",
+    "format": "prettier --cache --write --list-different --ignore-path .gitignore --ignore-path .prettierignore .",
+    "pre": "tsx scripts/prepare/prepare.ts",
+    "prebuild": "tsx scripts/convertToReact.ts && tsx scripts/generateAdditionalFiles.ts",
+    "build": "pnpm clean && pnpm format && pnpm pre && pnpm prebuild && rollup -c ./rollup.config.mjs",
+    "analyze": "rollup -c ./rollup.config.mjs --bundleConfigAsCjs && npx rollup-plugin-visualizer",
+    "types:check": "tsc --noEmit"
+  },
+  "homepage": "https://github.com/devpelatform/icons",
+  "files": [
+    "dist/*",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "pelatform",
+    "icons",
+    "icon"
+  ],
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.28.3",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@rollup/plugin-babel": "^6.1.0",
+    "@rollup/plugin-commonjs": "^28.0.8",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.4",
+    "@svgr/core": "^8.1.0",
+    "@svgr/plugin-jsx": "^8.1.0",
+    "@svgr/plugin-prettier": "^8.1.0",
+    "@types/node": "^24.8.1",
+    "@types/react": "^19.2.2",
+    "prettier": "^3.6.2",
+    "react": "^19.2.0",
+    "rimraf": "^6.0.1",
+    "rollup": "^4.52.4",
+    "rollup-plugin-dts": "^6.2.3",
+    "rollup-plugin-filesize": "^10.0.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
