@@ -1,0 +1,12 @@
+.gitignore
+pnpm-lock.yaml
+
+dist
+out
+sources
+icons
+src/icons/
+
+src/aliases.ts
+src/dynamic-imports.ts
+src/icon-list.ts
