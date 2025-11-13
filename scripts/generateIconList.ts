@@ -1,25 +1,11 @@
 import { readdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
-
-async function ensureDirectoryExists(dirPath: string): Promise<void> {
-  const { mkdir } = await import('fs/promises');
-  try {
-    await mkdir(dirPath, { recursive: true });
-  } catch (error) {
-    // Directory might already exist
-  }
-}
-
-function componentNameToKebabCase(componentName: string): string {
-  // Remove 'Icon' prefix and convert PascalCase to kebab-case
-  const withoutIcon = componentName.replace(/^Icon/, '');
-
-  return withoutIcon
-    .replace(/([A-Z])/g, '-$1')
-    .toLowerCase()
-    .replace(/^-/, ''); // Remove leading dash
-}
+import {
+  ensureDirectoryExists,
+  componentNameToKebabCase,
+  formatItemsInGroups,
+} from './utils/shared.ts';
 
 async function generateIconList(): Promise<void> {
   console.log('🚀 Starting icon list generation...');
@@ -56,23 +42,28 @@ async function generateIconList(): Promise<void> {
     // Sort alphabetically
     iconNames.sort();
 
-    // Format as array with proper line breaks for readability
-    content += 'export default [\n';
+    // Use chunking for better IDE performance
+    const chunkSize = 500;
+    const totalChunks = Math.ceil(iconNames.length / chunkSize);
 
-    // Group icons in lines of 5 for better readability
-    const groupSize = 5;
-    for (let i = 0; i < iconNames.length; i += groupSize) {
-      const group = iconNames.slice(i, i + groupSize);
-      const formattedGroup = group.map((name) => `"${name}"`).join(', ');
-      content += `  ${formattedGroup}`;
+    content += '// Chunked for better IDE performance\n\n';
 
-      if (i + groupSize < iconNames.length) {
-        content += ',';
-      }
-      content += '\n';
+    // Generate chunks
+    for (let i = 0; i < totalChunks; i++) {
+      const chunkItems = iconNames.slice(i * chunkSize, (i + 1) * chunkSize);
+      content += `const iconListChunk${i + 1} = [\n`;
+      content += formatItemsInGroups(chunkItems, 5);
+      content += '];\n\n';
     }
 
-    content += '];\n';
+    // Merge all chunks
+    content += 'export default [\n';
+    const chunkNames = Array.from(
+      { length: totalChunks },
+      (_, i) => `  ...iconListChunk${i + 1}`,
+    );
+    content += chunkNames.join(',\n');
+    content += '\n];\n';
 
     // Add type definition
     content += '\n// Type definition for icon names\n';

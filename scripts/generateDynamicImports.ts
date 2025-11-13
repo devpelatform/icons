@@ -1,25 +1,10 @@
 import { readdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
-
-async function ensureDirectoryExists(dirPath: string): Promise<void> {
-  const { mkdir } = await import('fs/promises');
-  try {
-    await mkdir(dirPath, { recursive: true });
-  } catch (error) {
-    // Directory might already exist
-  }
-}
-
-function componentNameToKebabCase(componentName: string): string {
-  // Remove 'Icon' prefix and convert PascalCase to kebab-case
-  const withoutIcon = componentName.replace(/^Icon/, '');
-
-  return withoutIcon
-    .replace(/([A-Z])/g, '-$1')
-    .toLowerCase()
-    .replace(/^-/, ''); // Remove leading dash
-}
+import {
+  ensureDirectoryExists,
+  componentNameToKebabCase,
+} from './utils/shared.ts';
 
 async function generateDynamicImports(): Promise<void> {
   console.log('🚀 Starting dynamic imports generation...');
@@ -41,23 +26,40 @@ async function generateDynamicImports(): Promise<void> {
 
     console.log(`📊 Found ${iconFiles.length} icon components`);
 
-    // Generate dynamic imports content
-    let content = '// Auto-generated dynamic imports file\n\n';
-    content += 'export default {\n';
+    // Generate dynamic imports content with chunking for better readability
+    let content = '// Auto-generated dynamic imports file\n';
+    content += '// Chunked for better IDE performance\n\n';
 
     const sortedFiles = iconFiles.sort();
-    const imports: string[] = [];
+    const chunkSize = 100; // Process in chunks of 100
+    const totalChunks = Math.ceil(sortedFiles.length / chunkSize);
 
-    for (const file of sortedFiles) {
-      const componentName = file.replace('.tsx', '');
-      const kebabCase = componentNameToKebabCase(componentName);
+    // Generate chunk objects
+    for (let i = 0; i < totalChunks; i++) {
+      const chunkFiles = sortedFiles.slice(i * chunkSize, (i + 1) * chunkSize);
+      const chunkImports: string[] = [];
 
-      imports.push(
-        `  '${kebabCase}': () => import('./icons/${componentName}')`,
-      );
+      for (const file of chunkFiles) {
+        const componentName = file.replace('.tsx', '');
+        const kebabCase = componentNameToKebabCase(componentName);
+
+        chunkImports.push(
+          `  '${kebabCase}': () => import('./icons/${componentName}')`,
+        );
+      }
+
+      content += `const iconChunk${i + 1} = {\n`;
+      content += chunkImports.join(',\n');
+      content += '\n};\n\n';
     }
 
-    content += imports.join(',\n');
+    // Merge all chunks
+    content += 'export default {\n';
+    const chunkNames = Array.from(
+      { length: totalChunks },
+      (_, i) => `  ...iconChunk${i + 1}`,
+    );
+    content += chunkNames.join(',\n');
     content += '\n};\n';
 
     // Add type definition

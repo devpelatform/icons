@@ -2,7 +2,6 @@ node_modules
 dist
 sources
 src/icons/
-scripts/prepare
 
 src/aliases.ts
 src/dynamic-imports.ts
