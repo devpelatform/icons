@@ -1,29 +1,12 @@
 import { readFile, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { existsSync } from 'fs';
+import { ensureDirectoryExists, getComponentName } from './utils/shared.ts';
 
 interface AliasMapping {
   outline?: { [aliasName: string]: string };
   filled?: { [aliasName: string]: string };
   [aliasName: string]: any;
-}
-
-async function ensureDirectoryExists(dirPath: string): Promise<void> {
-  const { mkdir } = await import('fs/promises');
-  try {
-    await mkdir(dirPath, { recursive: true });
-  } catch (error) {
-    // Directory might already exist
-  }
-}
-
-function getComponentName(iconName: string): string {
-  // Convert kebab-case to PascalCase and add Icon prefix
-  const pascalCase = iconName
-    .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join('');
-  return `Icon${pascalCase}`;
 }
 
 async function generateAliases(): Promise<void> {
