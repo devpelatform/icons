@@ -14,9 +14,19 @@ function buildEntry(entry: string): BuildResult {
   console.log(`\n📦 Building: ${entry} ...\n`);
 
   try {
+    const shell =
+      process.platform === 'win32' ? undefined : ('/bin/bash' as const);
+
     execSync(
-      `NODE_OPTIONS="--max-old-space-size=8192" npx rollup -c ./rollup.config.mjs --environment ENTRY:${entry},NODE_ENV:production`,
-      { stdio: 'inherit', shell: '/bin/bash' },
+      `pnpm exec rollup -c ./rollup.config.mjs --environment ENTRY:${entry},NODE_ENV:production`,
+      {
+        stdio: 'inherit',
+        ...(shell ? { shell } : {}),
+        env: {
+          ...process.env,
+          NODE_OPTIONS: '--max-old-space-size=8192',
+        },
+      },
     );
 
     const duration = Date.now() - startTime;

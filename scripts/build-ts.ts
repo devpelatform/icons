@@ -14,9 +14,19 @@ function generateTypesForEntry(entry: string): TypeGenResult {
   console.log(`\n📘 Generating types for: ${entry} ...\n`);
 
   try {
+    const shell =
+      process.platform === 'win32' ? undefined : ('/bin/bash' as const);
+
     execSync(
-      `NODE_OPTIONS="--max-old-space-size=8192" npx rollup -c ./rollup.dts.config.mjs --environment ENTRY:${entry}`,
-      { stdio: 'inherit', shell: '/bin/bash' },
+      `pnpm exec rollup -c ./rollup.dts.config.mjs --environment ENTRY:${entry}`,
+      {
+        stdio: 'inherit',
+        ...(shell ? { shell } : {}),
+        env: {
+          ...process.env,
+          NODE_OPTIONS: '--max-old-space-size=8192',
+        },
+      },
     );
 
     const duration = Date.now() - startTime;
