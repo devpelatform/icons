@@ -14,7 +14,7 @@ function runScript(
   return new Promise((resolve) => {
     console.log(`🚀 Running ${scriptName}...`);
 
-    const child = spawn('tsx', [scriptPath], {
+    const child = spawn('bun', [scriptPath], {
       stdio: 'inherit',
       shell: true,
     });

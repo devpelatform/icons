@@ -9,19 +9,19 @@ async function main() {
     await run('rimraf icons && rimraf out && rimraf sources/filled-suffix');
 
     console.log('▶️ Running checkSource...');
-    await run('tsx scripts/prepare/checkSource.ts');
+    await run('bun scripts/prepare/checkSource.ts');
 
     console.log('▶️ Running buildFilled...');
-    await run('tsx scripts/prepare/buildFilled.ts');
+    await run('bun scripts/prepare/buildFilled.ts');
 
     console.log('▶️ Running buildCategory...');
-    await run('tsx scripts/prepare/buildCategory.ts');
+    await run('bun scripts/prepare/buildCategory.ts');
 
     console.log('▶️ Running organize...');
-    await run('tsx scripts/prepare/organize.ts');
+    await run('bun scripts/prepare/organize.ts');
 
     console.log('▶️ Running iconStats...');
-    await run('tsx scripts/prepare/iconStats.ts');
+    await run('bun scripts/prepare/iconStats.ts');
 
     console.log('✅ All scripts completed successfully.');
   } catch (error) {
