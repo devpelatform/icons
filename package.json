@@ -45,13 +45,14 @@
   },
   "scripts": {
     "clean": "bun scripts/clean.ts",
-    "clean:all": "pnpm clean && rm -rf node_modules pnpm-lock.yaml",
+    "clean:all": "pnpm clean && rm -rf bun.lock node_modules",
     "format": "prettier --cache --write --list-different --ignore-path .gitignore --ignore-path .prettierignore .",
     "pre": "bun scripts/prepare/prepare.ts && bun scripts/convertToReact.ts && bun scripts/generateAdditionalFiles.ts",
     "build": "pnpm clean && pnpm format && pnpm pre && pnpm build:js && pnpm build:types",
     "build:js": "bun scripts/build-js.ts",
     "build:types": "bun scripts/build-ts.ts",
-    "types:check": "tsc --noEmit"
+    "types:check": "tsc --noEmit",
+    "bump": "bumpp"
   },
   "homepage": "https://github.com/devpelatform/icons",
   "files": [
@@ -61,6 +62,7 @@
   ],
   "keywords": [
     "pelatform",
+    "react",
     "icons",
     "icon"
   ],
@@ -73,6 +75,7 @@
     "@svgr/plugin-prettier": "^8.1.0",
     "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
+    "bumpp": "^10.3.1",
     "bun": "^1.3.3",
     "prettier": "^3.6.2",
     "react": "^19.2.0",

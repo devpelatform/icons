@@ -1,0 +1,34 @@
+import React from 'react';
+
+interface IconMapPinOffProps {
+  className?: string;
+  'data-slot'?: string;
+  [key: string]: any;
+}
+
+const IconMapPinOff: React.FC<IconMapPinOffProps> = (props) => {
+  // Handle size classes - if user provides size-* class, use it, otherwise default to size-4
+  const userClassName = props.className || '';
+  const hasSizeClass = /\bsize-\w+\b/.test(userClassName);
+  const defaultSize = hasSizeClass ? '' : 'size-4';
+  const finalClassName = `pelatform-icons pelatform-icon-map-pin-off ${defaultSize} ${userClassName}`.trim();
+
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+   className={finalClassName} data-slot={props["data-slot"] || "icon"} aria-hidden="true">
+    <path d="M9.442 9.432a3 3 0 0 0 4.113 4.134m1.445 -2.566a3 3 0 0 0 -3 -3" />
+    <path d="M17.152 17.162l-3.738 3.738a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 0 1 -.476 -10.794m2.18 -1.82a8.003 8.003 0 0 1 10.91 10.912" />
+    <path d="M3 3l18 18" />
+  </svg>
+  );
+};
+
+export default IconMapPinOff;

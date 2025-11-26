@@ -1,0 +1,39 @@
+import React from 'react';
+
+interface IconSocialOffProps {
+  className?: string;
+  'data-slot'?: string;
+  [key: string]: any;
+}
+
+const IconSocialOff: React.FC<IconSocialOffProps> = (props) => {
+  // Handle size classes - if user provides size-* class, use it, otherwise default to size-4
+  const userClassName = props.className || '';
+  const hasSizeClass = /\bsize-\w+\b/.test(userClassName);
+  const defaultSize = hasSizeClass ? '' : 'size-4';
+  const finalClassName = `pelatform-icons pelatform-icon-social-off ${defaultSize} ${userClassName}`.trim();
+
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+   className={finalClassName} data-slot={props["data-slot"] || "icon"} aria-hidden="true">
+    <path d="M12 5m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+    <path d="M5 19m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+    <path d="M17.57 17.602a2 2 0 0 0 2.83 2.827" />
+    <path d="M11.113 11.133a3 3 0 1 0 3.765 3.715" />
+    <path d="M12 7v1" />
+    <path d="M6.7 17.8l2.8 -2" />
+    <path d="M17.3 17.8l-2.8 -2" />
+    <path d="M3 3l18 18" />
+  </svg>
+  );
+};
+
+export default IconSocialOff;

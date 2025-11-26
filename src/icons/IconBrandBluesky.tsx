@@ -1,0 +1,32 @@
+import React from 'react';
+
+interface IconBrandBlueskyProps {
+  className?: string;
+  'data-slot'?: string;
+  [key: string]: any;
+}
+
+const IconBrandBluesky: React.FC<IconBrandBlueskyProps> = (props) => {
+  // Handle size classes - if user provides size-* class, use it, otherwise default to size-4
+  const userClassName = props.className || '';
+  const hasSizeClass = /\bsize-\w+\b/.test(userClassName);
+  const defaultSize = hasSizeClass ? '' : 'size-4';
+  const finalClassName = `pelatform-icons pelatform-icon-brand-bluesky ${defaultSize} ${userClassName}`.trim();
+
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+   className={finalClassName} data-slot={props["data-slot"] || "icon"} aria-hidden="true">
+    <path d="M6.335 5.144c-1.654 -1.199 -4.335 -2.127 -4.335 .826c0 .59 .35 4.953 .556 5.661c.713 2.463 3.13 2.75 5.444 2.369c-4.045 .665 -4.889 3.208 -2.667 5.41c1.03 1.018 1.913 1.59 2.667 1.59c2 0 3.134 -2.769 3.5 -3.5c.333 -.667 .5 -1.167 .5 -1.5c0 .333 .167 .833 .5 1.5c.366 .731 1.5 3.5 3.5 3.5c.754 0 1.637 -.571 2.667 -1.59c2.222 -2.203 1.378 -4.746 -2.667 -5.41c2.314 .38 4.73 .094 5.444 -2.369c.206 -.708 .556 -5.072 .556 -5.661c0 -2.953 -2.68 -2.025 -4.335 -.826c-2.293 1.662 -4.76 5.048 -5.665 6.856c-.905 -1.808 -3.372 -5.194 -5.665 -6.856z" />
+  </svg>
+  );
+};
+
+export default IconBrandBluesky;

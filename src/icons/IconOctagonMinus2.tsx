@@ -1,0 +1,33 @@
+import React from 'react';
+
+interface IconOctagonMinus2Props {
+  className?: string;
+  'data-slot'?: string;
+  [key: string]: any;
+}
+
+const IconOctagonMinus2: React.FC<IconOctagonMinus2Props> = (props) => {
+  // Handle size classes - if user provides size-* class, use it, otherwise default to size-4
+  const userClassName = props.className || '';
+  const hasSizeClass = /\bsize-\w+\b/.test(userClassName);
+  const defaultSize = hasSizeClass ? '' : 'size-4';
+  const finalClassName = `pelatform-icons pelatform-icon-octagon-minus-2 ${defaultSize} ${userClassName}`.trim();
+
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+   className={finalClassName} data-slot={props["data-slot"] || "icon"} aria-hidden="true">
+    <path d="M13.039 21.734l-.237 .101c-.512 .22 -1.092 .22 -1.604 0l-5.575 -2.389a2.036 2.036 0 0 1 -1.07 -1.07l-2.388 -5.574a2.036 2.036 0 0 1 0 -1.604l2.389 -5.575c.206 -.48 .589 -.863 1.07 -1.07l5.574 -2.388a2.036 2.036 0 0 1 1.604 0l5.575 2.389c.48 .206 .863 .589 1.07 1.07l2.388 5.574c.22 .512 .22 1.092 0 1.604l-.94 2.196" />
+    <path d="M16 19h6" />
+  </svg>
+  );
+};
+
+export default IconOctagonMinus2;

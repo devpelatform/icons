@@ -1,0 +1,37 @@
+import React from 'react';
+
+interface IconLogicXnorProps {
+  className?: string;
+  'data-slot'?: string;
+  [key: string]: any;
+}
+
+const IconLogicXnor: React.FC<IconLogicXnorProps> = (props) => {
+  // Handle size classes - if user provides size-* class, use it, otherwise default to size-4
+  const userClassName = props.className || '';
+  const hasSizeClass = /\bsize-\w+\b/.test(userClassName);
+  const defaultSize = hasSizeClass ? '' : 'size-4';
+  const finalClassName = `pelatform-icons pelatform-icon-logic-xnor ${defaultSize} ${userClassName}`.trim();
+
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2}
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    {...props}
+   className={finalClassName} data-slot={props["data-slot"] || "icon"} aria-hidden="true">
+    <path d="M22 12h-2" />
+    <path d="M2 9h4" />
+    <path d="M2 15h4" />
+    <path d="M5 19c1.778 -4.667 1.778 -9.333 0 -14" />
+    <path d="M8 5c10.667 2.1 10.667 12.6 0 14c1.806 -4.667 1.806 -9.333 0 -14z" />
+    <path d="M18 12m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+  </svg>
+  );
+};
+
+export default IconLogicXnor;

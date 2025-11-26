@@ -18,7 +18,7 @@ function generateTypesForEntry(entry: string): TypeGenResult {
       process.platform === 'win32' ? undefined : ('/bin/bash' as const);
 
     execSync(
-      `pnpm exec rollup -c ./rollup.dts.config.mjs --environment ENTRY:${entry}`,
+      `bun x rollup -c ./rollup.dts.config.mjs --environment ENTRY:${entry}`,
       {
         stdio: 'inherit',
         ...(shell ? { shell } : {}),

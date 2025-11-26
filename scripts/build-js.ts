@@ -18,7 +18,7 @@ function buildEntry(entry: string): BuildResult {
       process.platform === 'win32' ? undefined : ('/bin/bash' as const);
 
     execSync(
-      `pnpm exec rollup -c ./rollup.config.mjs --environment ENTRY:${entry},NODE_ENV:production`,
+      `bun x rollup -c ./rollup.config.mjs --environment ENTRY:${entry},NODE_ENV:production`,
       {
         stdio: 'inherit',
         ...(shell ? { shell } : {}),

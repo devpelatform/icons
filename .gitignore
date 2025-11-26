@@ -1,8 +1,4 @@
-node_modules
+.vscode
 dist
+node_modules
 sources
-src/icons/
-
-src/aliases.ts
-src/dynamic-imports.ts
-src/icon-list.ts
