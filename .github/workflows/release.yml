@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -19,6 +20,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -33,9 +39,10 @@ jobs:
             ${{ runner.os }}-bun-
 
       - name: Generate Changelog
+        if: startsWith(github.ref, 'refs/tags/')
         run: npx changelogithub
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT || github.token }}
 
       - name: Install Dependencies
         run: bun install --frozen-lockfile
@@ -48,20 +55,22 @@ jobs:
 
       - name: Publish to NPM
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          # Set NPM token
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 
-          # Publish each package
-          package_name=$(node -p "require('./package.json').name")
-          package_version=$(node -p "require('./package.json').version")
+          # Read package name & version
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+
+          echo "📦 Package: $PACKAGE_NAME"
+          echo "🔢 Version: $PACKAGE_VERSION"
 
           # Check if this version is already published
-          if npm view $package_name@$package_version 2>/dev/null; then
-            echo "⏭️ $package_name@$package_version already published, skipping"
+          if npm view "$PACKAGE_NAME@$PACKAGE_VERSION" > /dev/null 2>&1; then
+            echo "⏭️ Version already exists on NPM. Skipping publish."
           else
-            echo "📦 Publishing $package_name@$package_version"
-            cd $package_path
+            echo "🚀 Publishing $PACKAGE_NAME@$PACKAGE_VERSION..."
             npm publish --access public
-            cd -
           fi
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
